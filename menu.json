@@ -13,7 +13,7 @@
     {
       "id": 1,
       "activo": true,
-      "texto": "🔥 ¡HOY 2x1 EN HAMBURGUESAS!",
+      "texto": "🔥 ¡HOY MARTES 2x1 EN HAMBURGUESAS!",
       "imagen": "./img/combo_2x1.png",
       "mensaje_whatsapp": "Hola Llanera y Parrilla Restaurante\nQuiero aprovechar la promoción 2x1 en hamburguesas",
       "color_fondo": "#d4a373",
@@ -22,11 +22,20 @@
     {
       "id": 2,
       "activo": true,
-      "texto": "🎄 Cena Navideña - Reserva tu mesa con anticipación",
-      "imagen": "img/cena_navideña.png",
-      "mensaje_whatsapp": "Hola Llanera y Parrilla Restaurante\nQuiero una Reserva para la cena navideña",
+      "texto": "Bondiola Personal - deliciosa bondiola al barril acompañada de papa y arepa y salsa a tu elección",
+      "imagen": "img/bondiola.png",
+      "mensaje_whatsapp": "Hola Llanera y Parrilla Restaurante\nQuiero una bondiola personal",
       "color_fondo": "#8b0000",
       "color_texto": "#ffffff"
+    },
+    {
+      "id": 3,
+      "activo": true,
+      "texto": "Costi Chicharon Para Picar - delicioso costi chicharrón al barril acompañado de papa y arepa y salsa a tu elección",
+      "imagen": "./img/costi_chicharron.png",
+      "mensaje_whatsapp": "Hola Llanera y Parrilla Restaurante\nQuiero pedir un costi chicharrón para picar",
+      "color_fondo": "#ffcc00",
+      "color_texto": "#000000"
     }
   ],
   "legal": {
