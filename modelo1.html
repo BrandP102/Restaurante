@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llanera y Parrilla - Carta Digital</title>
+    <!-- Fuentes: Playfair Display (Elegancia) y Poppins (Modernidad) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- VARIABLES DE ESTILO STEAKHOUSE --- */
+        :root {
+            --color-fondo: #0a0a0a;
+            --color-tarjeta: #151515;
+            --color-primario: #d4a373; /* Dorado/Ámbar elegante */
+            --color-primario-hover: #c08c5a;
+            --color-texto-blanco: #ffffff;
+            --color-texto-gris: #aaaaaa;
+            --color-borde: #2a2a2a;
+            --sombra-dorada: 0 0 15px rgba(212, 163, 115, 0.3);
+        }
+
+        /* --- RESET Y BASES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto-blanco);
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Sutil textura de puntos */
+            background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* --- CABECERA (LOGO FIJO) --- */
+        header {
+            text-align: center; padding: 20px 15px;
+            background-color: #000;
+            border-bottom: 2px solid var(--color-primario);
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+        header img {
+            max-width: 160px; height: auto; display: block; margin: 0 auto;
+            filter: drop-shadow(0 0 8px rgba(212, 163, 115, 0.5));
+        }
+
+        /* --- BOTÓN FLOTANTE MENÚ LATERAL (SIEMPRE VISIBLE) --- */
+        #btn-menu-flotante {
+            position: fixed; top: 50%; right: 0; transform: translateY(-50%);
+            background: var(--color-primario);
+            color: #fff; border: none; padding: 18px 12px;
+            border-radius: 12px 0 0 12px; font-size: 1.2rem; cursor: pointer;
+            z-index: 999; box-shadow: -4px 0 20px rgba(212, 163, 115, 0.5);
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            transition: transform 0.3s, background 0.3s;
+        }
+        #btn-menu-flotante:hover {
+            background: var(--color-primario-hover);
+            transform: translateY(-50%) scale(1.05);
+        }
+        #btn-menu-flotante svg { width: 24px; height: 24px; }
+        #btn-menu-flotante span { font-size: 0.6rem; font-weight: 700; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 2px; }
+
+        /* --- PANEL LATERAL (SIDEBAR) --- */
+        #sidebar-menu {
+            position: fixed; top: 0; right: -320px; width: 300px; height: 100vh;
+            background-color: #111; z-index: 1001;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.9);
+            transition: right 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+            padding: 40px 25px; display: flex; flex-direction: column;
+            border-left: 3px solid var(--color-primario);
+            overflow-y: auto;
+        }
+        #sidebar-menu.abierto { right: 0; }
+        #sidebar-menu h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            color: var(--color-primario); margin-bottom: 25px;
+            border-bottom: 2px solid var(--color-primario);
+            padding-bottom: 10px; letter-spacing: 1px;
+        }
+        #sidebar-menu a {
+            color: var(--color-texto-blanco); text-decoration: none;
+            padding: 18px 0; border-bottom: 1px solid #222;
+            font-weight: 500; font-size: 1rem;
+            transition: color 0.3s, padding-left 0.3s;
+            display: flex; align-items: center; gap: 12px;
+        }
+        #sidebar-menu a:hover { color: var(--color-primario); padding-left: 10px; }
+        #sidebar-menu a::before {
+            content: '•'; color: var(--color-primario); font-weight: 700;
+            font-size: 1.5rem; opacity: 0; transition: opacity 0.3s;
+        }
+        #sidebar-menu a:hover::before { opacity: 1; }
+
+        #cerrar-menu {
+            position: absolute; top: 15px; right: 20px;
+            background: none; border: none; color: #fff;
+            font-size: 2rem; cursor: pointer; transition: color 0.3s;
+        }
+        #cerrar-menu:hover { color: var(--color-primario); }
+
+        /* --- OVERLAY --- */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 1000;
+            opacity: 0; visibility: hidden; transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        #overlay.visible { opacity: 1; visibility: visible; }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+
+        /* --- TÍTULOS DE SECCIÓN --- */
+        .seccion-titulo {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1.8rem; color: var(--color-primario);
+            text-align: center; margin: 40px 0 20px 0;
+            position: relative; letter-spacing: 1px;
+        }
+        .seccion-titulo::after {
+            content: ''; display: block; width: 60px; height: 2px;
+            background: var(--color-primario); margin: 8px auto 0;
+            border-radius: 2px; box-shadow: var(--sombra-dorada);
+        }
+
+        /* --- GRID DE PLATOS --- */
+        .grid-platos { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+        /* --- TARJETA DE PLATO (VISTA COMPACTA MÓVIL) --- */
+        .tarjeta-plato {
+            background-color: var(--color-tarjeta);
+            border-radius: 12px; overflow: hidden;
+            display: flex; flex-direction: row; align-items: center;
+            border: 1px solid #222;
+            cursor: pointer; transition: all 0.3s ease;
+            padding: 10px; gap: 12px; min-height: 80px;
+            position: relative;
+        }
+        .tarjeta-plato:hover {
+            border-color: var(--color-primario);
+            box-shadow: 0 0 20px rgba(212, 163, 115, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .tarjeta-imagen {
+            width: 70px; height: 70px; border-radius: 8px;
+            object-fit: cover; flex-shrink: 0;
+            border: 1px solid #333;
+        }
+        .tarjeta-info {
+            display: flex; flex-direction: column; flex-grow: 1; justify-content: center;
+        }
+        .tarjeta-titulo {
+            font-family: 'Poppins', sans-serif; font-weight: 600;
+            font-size: 0.95rem; color: var(--color-texto-blanco);
+            margin-bottom: 2px; line-height: 1.2;
+        }
+        .tarjeta-descripcion { display: none; }
+        .tarjeta-precio {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: var(--color-primario);
+        }
+
+        /* --- MODAL DE PRODUCTO --- */
+        #modal-producto {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1002;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s;
+            padding: 15px; backdrop-filter: blur(8px);
+        }
+        #modal-producto.abierto { opacity: 1; visibility: visible; }
+        .modal-contenido {
+            background-color: var(--color-tarjeta); width: 100%; max-width: 500px;
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 0 50px rgba(212, 163, 115, 0.2);
+            border: 1px solid var(--color-primario);
+            position: relative; transform: scale(0.9);
+            transition: transform 0.3s ease; max-height: 90vh;
+            display: flex; flex-direction: column;
+        }
+        #modal-producto.abierto .modal-contenido { transform: scale(1); }
+        .modal-cerrar {
+            position: absolute; top: 10px; right: 15px;
+            background: rgba(0,0,0,0.6); color: #fff; border: none;
+            width: 40px; height: 40px; border-radius: 50%;
+            font-size: 1.5rem; cursor: pointer; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s;
+        }
+        .modal-cerrar:hover { background: var(--color-primario); }
+        .modal-imagen { width: 100%; height: 260px; object-fit: cover; }
+        .modal-info { padding: 25px; overflow-y: auto; }
+        .modal-titulo {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem;
+            color: var(--color-primario); margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .modal-descripcion {
+            font-size: 0.95rem; color: var(--color-texto-gris);
+            margin-bottom: 25px; line-height: 1.6;
+        }
+        .modal-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #333; padding-top: 20px;
+        }
+        .modal-precio {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; font-weight: 700; color: var(--color-primario);
+        }
+        .btn-agregar-modal {
+            background: var(--color-primario);
+            color: #fff; border: none; padding: 14px 25px;
+            border-radius: 30px; font-size: 0.9rem; font-weight: 700;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(212, 163, 115, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-agregar-modal:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(212, 163, 115, 0.6); }
+        .btn-agregar-modal:active { transform: scale(0.95); }
+
+        /* --- MEDIA QUERIES (VISTA ESCRITORIO) --- */
+        @media (min-width: 600px) {
+            .grid-platos { grid-template-columns: repeat(2, 1fr); }
+            .tarjeta-plato { flex-direction: column; align-items: stretch; padding: 0; }
+            .tarjeta-imagen { width: 100%; height: 180px; border-radius: 0; border: none; }
+            .tarjeta-info { padding: 15px; }
+            .tarjeta-descripcion { display: block; font-size: 0.85rem; color: #999; margin: 5px 0 10px; }
+            .tarjeta-titulo { font-size: 1.1rem; }
+            header img { max-width: 180px; }
+            #btn-menu-flotante { top: 40%; padding: 20px 15px; }
+            .seccion-titulo { font-size: 2.5rem; }
+        }
+
+        @media (min-width: 992px) {
+            .grid-platos { grid-template-columns: repeat(3, 1fr); }
+            .modal-contenido { max-width: 600px; }
+            .modal-imagen { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="./logo.webp" alt="Llanera y Parrilla Logo">
+    </header>
+
+    <!-- Botón Flotante Menú Lateral (Siempre visible) -->
+    <button id="btn-menu-flotante">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <span>MENÚ</span>
+    </button>
+
+    <!-- Panel Lateral (Sidebar) -->
+    <div id="sidebar-menu">
+        <button id="cerrar-menu">&times;</button>
+        <h3>Categorías</h3>
+        <a href="#especiales">Platos Especiales</a>
+        <a href="#burritos">Burritos</a>
+        <a href="#hamburguesas">Hamburguesas</a>
+        <a href="#parrilladas">Parrilladas</a>
+        <a href="#bebidas">Bebidas</a>
+        <a href="#adiciones">Adiciones</a>
+        <a href="#mixtos">Platos Mixtos y Wok</a>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay"></div>
+
+    <div class="container">
+
+        <!-- ================= SECCIÓN: PLATOS ESPECIALES ================= -->
+        <h2 id="especiales" class="seccion-titulo">Platos Especiales</h2>
+        <div class="grid-platos">
+
+            <div class="tarjeta-plato" data-titulo="Chorizo De La Casa" data-desc="Chorizo de cerdo artesanal de la casa, papa y salsas de la casa." data-precio="$10.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Chorizo+de+la+Casa">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Chorizo" alt="Chorizo De La Casa" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Chorizo De La Casa</h3>
+                    <p class="tarjeta-descripcion">Chorizo de cerdo artesanal de la casa, papa y salsas de la casa.</p>
+                    <span class="tarjeta-precio">$10.000</span>
+                </div>
+            </div>
+
+            <div class="tarjeta-plato" data-titulo="Corte De Carne Lomo Caracho Angus 300 Gr" data-desc="Viene acompañado de papa, maduro y ensalada." data-precio="$30.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Corte+de+Carne">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Corte" alt="Corte De Carne" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Corte De Carne Lomo Caracho Angus 300 Gr</h3>
+                    <p class="tarjeta-descripcion">Viene acompañado de papa, maduro y ensalada.</p>
+                    <span class="tarjeta-precio">$30.000</span>
+                </div>
+            </div>
+
+            <div class="tarjeta-plato" data-titulo="Costillon De Cerdo" data-desc="Exquisita costilla con chicharrón crocante acompañado de papa amarilla, arepa y guacamole." data-precio="$32.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Costillon+de+Cerdo">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Costillon" alt="Costillon De Cerdo" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Costillon De Cerdo</h3>
+                    <p class="tarjeta-descripcion">Exquisita costilla con chicharrón crocante acompañado de papa amarilla, arepa y guacamole.</p>
+                    <span class="tarjeta-precio">$32.000</span>
+                </div>
+            </div>
+
+            <div class="tarjeta-plato" data-titulo="Pechuga Ranchera" data-desc="Deliciosa pechuga a la parrilla bañada en queso fundido y salchicha tipo ranchera acompañada de papas a la francesa." data-precio="$30.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Pechuga+Ranchera">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Pechuga" alt="Pechuga Ranchera" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Pechuga Ranchera</h3>
+                    <p class="tarjeta-descripcion">Deliciosa pechuga a la parrilla bañada en queso fundido y salchicha tipo ranchera acompañada de papas a la francesa.</p>
+                    <span class="tarjeta-precio">$30.000</span>
+                </div>
+            </div>
+
+            <div class="tarjeta-plato" data-titulo="Pollo Grillet 300g" data-desc="Viene acompañado de tocineta y papas a la francesa." data-precio="$28.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Pollo+Grillet">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Pollo" alt="Pollo Grillet" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Pollo Grillet 300g</h3>
+                    <p class="tarjeta-descripcion">Viene acompañado de tocineta y papas a la francesa.</p>
+                    <span class="tarjeta-precio">$28.000</span>
+                </div>
+            </div>
+
+            <div class="tarjeta-plato" data-titulo="Punta De Anca Angus 300gr" data-desc="Viene acompañado de papa, maduro y ensalada." data-precio="$36.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Punta+de+Anca">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Punta" alt="Punta De Anca" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Punta De Anca Angus 300gr</h3>
+                    <p class="tarjeta-descripcion">Viene acompañado de papa, maduro y ensalada.</p>
+                    <span class="tarjeta-precio">$36.000</span>
+                </div>
+            </div>
+
+            <div class="tarjeta-plato" data-titulo="Bondiola Personal" data-desc="Deliciosa bondiola al barril acompañada de papa y arepa y salsa a tu elección." data-precio="$18.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Bondiola+Personal">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Bondiola" alt="Bondiola Personal" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Bondiola Personal</h3>
+                    <p class="tarjeta-descripcion">Deliciosa bondiola al barril acompañada de papa y arepa y salsa a tu elección.</p>
+                    <span class="tarjeta-precio">$18.000</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= SECCIÓN: BURRITOS ================= -->
+        <h2 id="burritos" class="seccion-titulo">Burritos</h2>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Burrito Llanero" data-desc="Delicioso burrito llanero viene acompañado de nachos y guacamole." data-precio="$20.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Burrito+Llanero">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Burrito" alt="Burrito Llanero" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Burrito Llanero</h3>
+                    <p class="tarjeta-descripcion">Delicioso burrito llanero viene acompañado de nachos y guacamole.</p>
+                    <span class="tarjeta-precio">$20.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Burrito Mixto" data-desc="Delicioso burrito llanero viene acompañado de nachos y guacamole." data-precio="$24.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Burrito+Mixto">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Burrito+Mixto" alt="Burrito Mixto" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Burrito Mixto</h3>
+                    <p class="tarjeta-descripcion">Delicioso burrito llanero viene acompañado de nachos y guacamole.</p>
+                    <span class="tarjeta-precio">$24.000</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECCIÓN: HAMBURGUESAS ================= -->
+        <h2 id="hamburguesas" class="seccion-titulo">Hamburguesas</h2>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Combo 2x1 De 27" data-desc="2 hamburguesas de la casa con papitas a la francesa y 2 gaseosas personales." data-precio="$27.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Combo+2x1">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Combo" alt="Combo 2x1" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Combo 2x1 De 27</h3>
+                    <p class="tarjeta-descripcion">2 hamburguesas de la casa con papitas a la francesa y 2 gaseosas personales.</p>
+                    <span class="tarjeta-precio">$27.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Hamburguesa De La Casa" data-desc="Todas nuestras hamburguesas llevan pan brioche, queso mozarella, tocineta ahumada, lechuga crespa, cebolla, tomate salsas de la casa y papas a la francesa." data-precio="$22.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Hamburguesa+Casa">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Hamburguesa" alt="Hamburguesa Casa" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Hamburguesa De La Casa</h3>
+                    <p class="tarjeta-descripcion">Todas nuestras hamburguesas llevan pan brioche, queso mozarella, tocineta ahumada, lechuga crespa, cebolla, tomate salsas de la casa y papas a la francesa.</p>
+                    <span class="tarjeta-precio">$22.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Hamburguesa Cheddar Paradise" data-desc="Deliciosa hamburguesa cheddar paradise viene acompañada de papas a la francesa y salsa de la casa." data-precio="$28.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Cheddar+Paradise">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Cheddar" alt="Cheddar Paradise" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Hamburguesa Cheddar Paradise</h3>
+                    <p class="tarjeta-descripcion">Deliciosa hamburguesa cheddar paradise viene acompañada de papas a la francesa y salsa de la casa.</p>
+                    <span class="tarjeta-precio">$28.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Hamburguesa Cheddar Paradise Doble Carne" data-desc="Deliciosa hamburguesa cheddar paradise, pan tipo brioche, dos carnes de 150gr cada una, queso mozzarella extra, queso cheddar y tocineta premium." data-precio="$32.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Cheddar+Doble">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Cheddar+Doble" alt="Cheddar Doble" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Hamburguesa Cheddar Paradise Doble Carne</h3>
+                    <p class="tarjeta-descripcion">Deliciosa hamburguesa cheddar paradise, pan tipo brioche, dos carnes de 150gr cada una, queso mozzarella extra, queso cheddar y tocineta premium.</p>
+                    <span class="tarjeta-precio">$32.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Hamburguesa De La Casa Doble Carne" data-desc="Todas nuestras hamburguesas llevan pan brioche, queso mozarella, tocineta ahumada, lechuga crespa, cebolla, tomate salsas de la casa y papas a la francesa." data-precio="$26.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Casa+Doble">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Casa+Doble" alt="Casa Doble" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Hamburguesa De La Casa Doble Carne</h3>
+                    <p class="tarjeta-descripcion">Todas nuestras hamburguesas llevan pan brioche, queso mozarella, tocineta ahumada, lechuga crespa, cebolla, tomate salsas de la casa y papas a la francesa.</p>
+                    <span class="tarjeta-precio">$26.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Hamburguesa Llanera" data-desc="Deliciosa hamburguesa llanera viene acompañada de papas a la francesa y salsa de la casa." data-precio="$27.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Hamburguesa+Llanera">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Llanera" alt="Hamburguesa Llanera" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Hamburguesa Llanera</h3>
+                    <p class="tarjeta-descripcion">Deliciosa hamburguesa llanera viene acompañada de papas a la francesa y salsa de la casa.</p>
+                    <span class="tarjeta-precio">$27.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Hamburguesa Llanera Doble Carne" data-desc="Deliciosa hamburguesa llanera doble carne viene acompañada de papas a la francesa y salsa de la casa." data-precio="$31.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Llanera+Doble">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Llanera+Doble" alt="Llanera Doble" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Hamburguesa Llanera Doble Carne</h3>
+                    <p class="tarjeta-descripcion">Deliciosa hamburguesa llanera doble carne viene acompañada de papas a la francesa y salsa de la casa.</p>
+                    <span class="tarjeta-precio">$31.000</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECCIÓN: PARRILLADAS ================= -->
+        <h2 id="parrilladas" class="seccion-titulo">Parrilladas</h2>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Parrillada Al Parque Familiar" data-desc="5 tipos de carne (llanera, costilla, pollo, churrasco, chorizo). Este plato viene acompañado de patacones, papa amarilla, chimichurri y ají." data-precio="$58.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Parrillada+Familiar">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Parrillada" alt="Parrillada Familiar" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Parrillada Al Parque Familiar</h3>
+                    <p class="tarjeta-descripcion">5 tipos de carne (llanera, costilla, pollo, churrasco, chorizo). Este plato viene acompañado de patacones, papa amarilla, chimichurri y ají.</p>
+                    <span class="tarjeta-precio">$58.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Parrillada Al Parque Para Cuatro" data-desc="5 tipos de carne (llanera, costilla, pollo, churrasco, chorizo). Este plato viene acompañado de patacones, papa amarilla, chimichurri y ají." data-precio="$41.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Parrillada+Cuatro">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Parrillada+4" alt="Parrillada Cuatro" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Parrillada Al Parque Para Cuatro</h3>
+                    <p class="tarjeta-descripcion">5 tipos de carne (llanera, costilla, pollo, churrasco, chorizo). Este plato viene acompañado de patacones, papa amarilla, chimichurri y ají.</p>
+                    <span class="tarjeta-precio">$41.000</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECCIÓN: BEBIDAS ================= -->
+        <h2 id="bebidas" class="seccion-titulo">Bebidas</h2>
+        <h3 style="color: #fff; margin: 15px 0 10px; font-family: 'Playfair Display'; text-align: center; font-style: italic; font-size: 1.4rem;">Cervezas</h3>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Cerveza Aguila Ligh" data-desc="Deliciosa cerveza Aguila Light." data-precio="$6.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Aguila+Light">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Aguila" alt="Aguila Light" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Cerveza Aguila Ligh</h3>
+                    <p class="tarjeta-descripcion">Deliciosa cerveza Aguila Light.</p>
+                    <span class="tarjeta-precio">$6.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Cerveza Club Colombia Dorada" data-desc="Deliciosa cerveza Club Colombia." data-precio="$7.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Club+Colombia">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Club" alt="Club Colombia" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Cerveza Club Colombia Dorada</h3>
+                    <p class="tarjeta-descripcion">Deliciosa cerveza Club Colombia.</p>
+                    <span class="tarjeta-precio">$7.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Cerveza Corona" data-desc="Deliciosa cerveza Corona." data-precio="$9.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Corona">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Corona" alt="Corona" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Cerveza Corona</h3>
+                    <p class="tarjeta-descripcion">Deliciosa cerveza Corona.</p>
+                    <span class="tarjeta-precio">$9.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Cerveza Poker" data-desc="Deliciosa cerveza Poker." data-precio="$5.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Poker">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Poker" alt="Poker" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Cerveza Poker</h3>
+                    <p class="tarjeta-descripcion">Deliciosa cerveza Poker.</p>
+                    <span class="tarjeta-precio">$5.000</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color: #fff; margin: 15px 0 10px; font-family: 'Playfair Display'; text-align: center; font-style: italic; font-size: 1.4rem;">Coctelería</h3>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Haibal" data-desc="Soda italiana con licor." data-precio="$16.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Haibal">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Haibal" alt="Haibal" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Haibal</h3>
+                    <p class="tarjeta-descripcion">Soda italiana con licor.</p>
+                    <span class="tarjeta-precio">$16.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Jarra De Sangría" data-desc="Jarra de sangría de la casa." data-precio="$60.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Jarra+Sangria">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Sangria" alt="Jarra Sangria" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Jarra De Sangría</h3>
+                    <p class="tarjeta-descripcion">Jarra de sangría de la casa.</p>
+                    <span class="tarjeta-precio">$60.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Limonada De Vino Tinto" data-desc="Refrescante limonada de vino tinto." data-precio="$13.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Vino">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Limonada+Vino" alt="Limonada Vino" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Limonada De Vino Tinto</h3>
+                    <p class="tarjeta-descripcion">Refrescante limonada de vino tinto.</p>
+                    <span class="tarjeta-precio">$13.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Soda Italianas" data-desc="Soda italiana de tu sabor preferido." data-precio="$12.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Soda+Italiana">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Soda" alt="Soda Italiana" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Soda Italianas</h3>
+                    <p class="tarjeta-descripcion">Soda italiana de tu sabor preferido.</p>
+                    <span class="tarjeta-precio">$12.000</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color: #fff; margin: 15px 0 10px; font-family: 'Playfair Display'; text-align: center; font-style: italic; font-size: 1.4rem;">Jugos y Limonadas</h3>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Frutas Amarillos" data-desc="Mango, maracuyá, piña." data-precio="$12.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Frutas+Amarillos">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Frutas+Amarillas" alt="Frutas Amarillos" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Frutas Amarillos</h3>
+                    <p class="tarjeta-descripcion">Mango, maracuyá, piña.</p>
+                    <span class="tarjeta-precio">$12.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Frutas Rojos" data-desc="Mora, fresa, cereza." data-precio="$12.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Frutas+Rojos">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Frutas+Rojas" alt="Frutas Rojos" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Frutas Rojos</h3>
+                    <p class="tarjeta-descripcion">Mora, fresa, cereza.</p>
+                    <span class="tarjeta-precio">$12.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Limonada Cerezada Jarra" data-desc="Deliciosa jarra de limonada cerezada." data-precio="$28.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Cerezada">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Limonada+Cerezada" alt="Limonada Cerezada" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Limonada Cerezada Jarra</h3>
+                    <p class="tarjeta-descripcion">Deliciosa jarra de limonada cerezada.</p>
+                    <span class="tarjeta-precio">$28.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Limonada De Coco Jarra" data-desc="Jarra de limonada de coco." data-precio="$28.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Coco">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Limonada+Coco" alt="Limonada Coco" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Limonada De Coco Jarra</h3>
+                    <p class="tarjeta-descripcion">Jarra de limonada de coco.</p>
+                    <span class="tarjeta-precio">$28.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Limonada De La Casa Vaso" data-desc="Limonada de la casa." data-precio="$6.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Casa">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Limonada+Casa" alt="Limonada Casa" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Limonada De La Casa Vaso</h3>
+                    <p class="tarjeta-descripcion">Limonada de la casa.</p>
+                    <span class="tarjeta-precio">$6.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Limonada Jarra" data-desc="Deliciosa jarra de limonada artesanal francés." data-precio="$14.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Jarra">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Limonada+Jarra" alt="Limonada Jarra" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Limonada Jarra</h3>
+                    <p class="tarjeta-descripcion">Deliciosa jarra de limonada artesanal francés.</p>
+                    <span class="tarjeta-precio">$14.000</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color: #fff; margin: 15px 0 10px; font-family: 'Playfair Display'; text-align: center; font-style: italic; font-size: 1.4rem;">Gaseosas</h3>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Botella De Agua 600ml" data-desc="Botella de agua." data-precio="$3.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Agua">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Agua" alt="Agua" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Botella De Agua 600ml</h3>
+                    <p class="tarjeta-descripcion">Botella de agua.</p>
+                    <span class="tarjeta-precio">$3.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Cocacola 1.5" data-desc="Coca cola 1.5." data-precio="$9.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=CocaCola+1.5">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=CocaCola+1.5" alt="CocaCola 1.5" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Cocacola 1.5</h3>
+                    <p class="tarjeta-descripcion">Coca cola 1.5.</p>
+                    <span class="tarjeta-precio">$9.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Cocacola 3.125" data-desc="Coca cola 3 litros." data-precio="$12.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=CocaCola+3.125">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=CocaCola+3.125" alt="CocaCola 3.125" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Cocacola 3.125</h3>
+                    <p class="tarjeta-descripcion">Coca cola 3 litros.</p>
+                    <span class="tarjeta-precio">$12.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Cocacola 400 Ml" data-desc="Coca cola." data-precio="$4.500" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=CocaCola+400">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=CocaCola+400" alt="CocaCola 400" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Cocacola 400 Ml</h3>
+                    <p class="tarjeta-descripcion">Coca cola.</p>
+                    <span class="tarjeta-precio">$4.500</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Hit Personal 500ml" data-desc="Hit personal." data-precio="$5.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Hit">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Hit" alt="Hit" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Hit Personal 500ml</h3>
+                    <p class="tarjeta-descripcion">Hit personal.</p>
+                    <span class="tarjeta-precio">$5.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Soda Personal" data-desc="Soda personal." data-precio="$4.500" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Soda+Personal">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Soda" alt="Soda Personal" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Soda Personal</h3>
+                    <p class="tarjeta-descripcion">Soda personal.</p>
+                    <span class="tarjeta-precio">$4.500</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECCIÓN: ADICIONES ================= -->
+        <h2 id="adiciones" class="seccion-titulo">Adiciones</h2>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Arepitas Fritas" data-desc="Arepitas fritas." data-precio="$4.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Arepitas">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Arepitas" alt="Arepitas" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Arepitas Fritas</h3>
+                    <p class="tarjeta-descripcion">Arepitas fritas.</p>
+                    <span class="tarjeta-precio">$4.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Ensalada" data-desc="Ensalada fresca." data-precio="$3.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Ensalada">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Ensalada" alt="Ensalada" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Ensalada</h3>
+                    <p class="tarjeta-descripcion">Ensalada fresca.</p>
+                    <span class="tarjeta-precio">$3.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Guacamole" data-desc="Guacamole fresco." data-precio="$4.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Guacamole">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Guacamole" alt="Guacamole" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Guacamole</h3>
+                    <p class="tarjeta-descripcion">Guacamole fresco.</p>
+                    <span class="tarjeta-precio">$4.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Maduro Frito" data-desc="Maduro frito." data-precio="$4.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Maduro+Frito">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Maduro" alt="Maduro Frito" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Maduro Frito</h3>
+                    <p class="tarjeta-descripcion">Maduro frito.</p>
+                    <span class="tarjeta-precio">$4.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Maicitos" data-desc="Maicitos." data-precio="$3.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Maicitos">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Maicitos" alt="Maicitos" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Maicitos</h3>
+                    <p class="tarjeta-descripcion">Maicitos.</p>
+                    <span class="tarjeta-precio">$3.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Papa Cocinada" data-desc="Papa cocinada." data-precio="$4.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Papa+Cocinada">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Papa" alt="Papa Cocinada" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Papa Cocinada</h3>
+                    <p class="tarjeta-descripcion">Papa cocinada.</p>
+                    <span class="tarjeta-precio">$4.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Papas Francesas" data-desc="Papas francesas." data-precio="$6.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Papas+Francesas">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Papas" alt="Papas Francesas" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Papas Francesas</h3>
+                    <p class="tarjeta-descripcion">Papas francesas.</p>
+                    <span class="tarjeta-precio">$6.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Porción De Aguacate" data-desc="Porción de aguacate." data-precio="$5.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Aguacate">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Aguacate" alt="Aguacate" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Porción De Aguacate</h3>
+                    <p class="tarjeta-descripcion">Porción de aguacate.</p>
+                    <span class="tarjeta-precio">$5.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Porción De Arroz" data-desc="Porción de arroz." data-precio="$4.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Arroz">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Arroz" alt="Arroz" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Porción De Arroz</h3>
+                    <p class="tarjeta-descripcion">Porción de arroz.</p>
+                    <span class="tarjeta-precio">$4.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Queso Mozzarella" data-desc="Queso mozzarella." data-precio="$4.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Queso">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Queso" alt="Queso Mozzarella" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Queso Mozzarella</h3>
+                    <p class="tarjeta-descripcion">Queso mozzarella.</p>
+                    <span class="tarjeta-precio">$4.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Tocineta Ahumada" data-desc="Tocineta ahumada." data-precio="$4.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Tocineta">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Tocineta" alt="Tocineta" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Tocineta Ahumada</h3>
+                    <p class="tarjeta-descripcion">Tocineta ahumada.</p>
+                    <span class="tarjeta-precio">$4.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Yuca Cocinada" data-desc="Yuca cocinada." data-precio="$5.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Yuca">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Yuca" alt="Yuca Cocinada" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Yuca Cocinada</h3>
+                    <p class="tarjeta-descripcion">Yuca cocinada.</p>
+                    <span class="tarjeta-precio">$5.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Yuguita Frita" data-desc="Yuguita frita." data-precio="$6.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Yuguita">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Yuguita" alt="Yuguita Frita" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Yuguita Frita</h3>
+                    <p class="tarjeta-descripcion">Yuguita frita.</p>
+                    <span class="tarjeta-precio">$6.000</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECCIÓN: MIXTOS Y WOK ================= -->
+        <h2 id="mixtos" class="seccion-titulo">Platos Mixtos y Wok</h2>
+        <div class="grid-platos">
+            <div class="tarjeta-plato" data-titulo="Costillas Pollo Y Chorizo Familiar" data-desc="Deliciosa costilla bbq, pollo y chorizo viene acompañado de papa amarilla y maduro." data-precio="$62.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Costillas+Pollo">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Costillas" alt="Costillas Pollo" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Costillas Pollo Y Chorizo Familiar</h3>
+                    <p class="tarjeta-descripcion">Deliciosa costilla bbq, pollo y chorizo viene acompañado de papa amarilla y maduro.</p>
+                    <span class="tarjeta-precio">$62.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Mixto Familiar" data-desc="Todos los platos vienen acompañados de papa, yuca, maduro, chimichurri y ají." data-precio="$62.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Mix+Familiar">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Mix" alt="Mix Familiar" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Mixto Familiar</h3>
+                    <p class="tarjeta-descripcion">Todos los platos vienen acompañados de papa, yuca, maduro, chimichurri y ají.</p>
+                    <span class="tarjeta-precio">$62.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Wok Paisa Duo X 800" data-desc="Nuestro arroz salteado con pollo, costilla ahumada, chorizo, tocineta y vegetales (zanahoria, arveja, maicitos, maduritos)." data-precio="$24.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Wok+Paisa">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Wok+Paisa" alt="Wok Paisa" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Wok Paisa Duo X 800</h3>
+                    <p class="tarjeta-descripcion">Nuestro arroz salteado con pollo, costilla ahumada, chorizo, tocineta y vegetales (zanahoria, arveja, maicitos, maduritos).</p>
+                    <span class="tarjeta-precio">$24.000</span>
+                </div>
+            </div>
+            <div class="tarjeta-plato" data-titulo="Wok Chino Personal" data-desc="Nuestro arroz salteado con pollo, camarones, jamón y vegetales (zanahoria, arvejas, raíces chinas)." data-precio="$14.000" data-imagen="https://via.placeholder.com/600x400/d4a373/ffffff?text=Wok+Chino">
+                <img src="https://via.placeholder.com/150x150/d4a373/ffffff?text=Wok+Chino" alt="Wok Chino" class="tarjeta-imagen">
+                <div class="tarjeta-info">
+                    <h3 class="tarjeta-titulo">Wok Chino Personal</h3>
+                    <p class="tarjeta-descripcion">Nuestro arroz salteado con pollo, camarones, jamón y vegetales (zanahoria, arvejas, raíces chinas).</p>
+                    <span class="tarjeta-precio">$14.000</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer style="text-align: center; padding: 30px; color: #555; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 40px;">
+        <p></p>
+    </footer>
+
+    <!-- ================= MODAL DE PRODUCTO ================= -->
+    <div id="modal-producto">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="cerrar-modal">&times;</button>
+            <img src="" alt="Imagen del plato" class="modal-imagen" id="modal-img">
+            <div class="modal-info">
+                <h2 class="modal-titulo" id="modal-titulo"></h2>
+                <p class="modal-descripcion" id="modal-desc"></p>
+                <div class="modal-footer">
+                    <span class="modal-precio" id="modal-precio"></span>
+                    <button class="btn-agregar-modal">+ Agregar al Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. LÓGICA DEL MENÚ LATERAL FLOTANTE
+            const btnMenuFlotante = document.getElementById('btn-menu-flotante');
+            const sidebar = document.getElementById('sidebar-menu');
+            const cerrarMenu = document.getElementById('cerrar-menu');
+            const overlay = document.getElementById('overlay');
+
+            btnMenuFlotante.addEventListener('click', () => {
+                sidebar.classList.add('abierto');
+                overlay.classList.add('visible');
+            });
+
+            cerrarMenu.addEventListener('click', () => {
+                sidebar.classList.remove('abierto');
+                overlay.classList.remove('visible');
+            });
+
+            // Cerrar menú lateral al hacer clic en un enlace
+            const enlacesSidebar = sidebar.querySelectorAll('a');
+            enlacesSidebar.forEach(enlace => {
+                enlace.addEventListener('click', () => {
+                    sidebar.classList.remove('abierto');
+                    overlay.classList.remove('visible');
+                });
+            });
+
+            // 2. LÓGICA DEL MODAL DE PRODUCTO
+            const tarjetas = document.querySelectorAll('.tarjeta-plato');
+            const modal = document.getElementById('modal-producto');
+            const modalImg = document.getElementById('modal-img');
+            const modalTitulo = document.getElementById('modal-titulo');
+            const modalDesc = document.getElementById('modal-desc');
+            const modalPrecio = document.getElementById('modal-precio');
+            const btnCerrarModal = document.getElementById('cerrar-modal');
+
+            tarjetas.forEach(tarjeta => {
+                tarjeta.addEventListener('click', () => {
+                    const titulo = tarjeta.getAttribute('data-titulo');
+                    const desc = tarjeta.getAttribute('data-desc');
+                    const precio = tarjeta.getAttribute('data-precio');
+                    const imagen = tarjeta.getAttribute('data-imagen');
+
+                    modalTitulo.textContent = titulo;
+                    modalDesc.textContent = desc;
+                    modalPrecio.textContent = precio;
+                    modalImg.src = imagen;
+
+                    modal.classList.add('abierto');
+                    overlay.classList.add('visible');
+                });
+            });
+
+            btnCerrarModal.addEventListener('click', () => {
+                modal.classList.remove('abierto');
+                overlay.classList.remove('visible');
+            });
+            
+            overlay.addEventListener('click', () => {
+                modal.classList.remove('abierto');
+                sidebar.classList.remove('abierto');
+                overlay.classList.remove('visible');
+            });
+
+        });
+    </script>
+</body>
+</html>

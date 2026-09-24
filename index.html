@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llanera y Parrilla - Carta Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- CABECERA CON LOGO -->
+    <header>
+        <img src="./logo.webp" alt="Llanera y Parrilla Logo" id="logo">
+    </header>
+
+    <!-- BOTÓN FLOTANTE MENÚ LATERAL -->
+    <button id="btn-menu-flotante">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <span>MENÚ</span>
+    </button>
+
+    <!-- PANEL LATERAL (SIDEBAR) - Se llena dinámicamente -->
+    <div id="sidebar-menu">
+        <button id="cerrar-menu">&times;</button>
+        <h3>Categorías</h3>
+        <div id="sidebar-lista"></div>
+    </div>
+
+    <!-- OVERLAY -->
+    <div id="overlay"></div>
+
+    <!-- CONTENEDOR PRINCIPAL - Se llena dinámicamente con las categorías y productos -->
+    <div class="container" id="carta-container">
+        <!-- Aquí app.js inyectará todo el menú -->
+        <p style="text-align: center; color: #aaa; padding: 50px 0;">Cargando menú...</p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="text-align: center; padding: 30px; color: #555; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 40px;">
+        <p id="footer-info"></p>
+    </footer>
+
+    <!-- MODAL DE PRODUCTO -->
+    <div id="modal-producto">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="cerrar-modal">&times;</button>
+            <img src="" alt="Imagen del plato" class="modal-imagen" id="modal-img">
+            <div class="modal-info">
+                <h2 class="modal-titulo" id="modal-titulo"></h2>
+                <p class="modal-descripcion" id="modal-desc"></p>
+                <div class="modal-footer">
+                    <span class="modal-precio" id="modal-precio"></span>
+                    <button class="btn-agregar-modal" id="btn-agregar-modal">+ Agregar al Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARRITO FLOTANTE -->
+    <button id="btn-carrito-flotante">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <span id="contador-carrito">0</span>
+    </button>
+
+    <!-- PANEL DEL CARRITO -->
+    <div id="panel-carrito">
+        <div class="carrito-header">
+            <h3>🛒 Tu Pedido</h3>
+            <button id="cerrar-carrito">&times;</button>
+        </div>
+        <div id="carrito-items">
+            <p style="text-align: center; color: #777; padding: 20px;">Tu carrito está vacío</p>
+        </div>
+        <div class="carrito-footer">
+            <div class="carrito-total">Total: <span id="carrito-total">$0</span></div>
+            <button id="btn-comprar-whatsapp">📲 Comprar por WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- INDICADOR DE HORARIO -->
+    <div id="indicador-horario"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
