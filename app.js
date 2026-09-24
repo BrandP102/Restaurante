@@ -293,7 +293,7 @@ function comprarPorWhatsApp() {
     const total = calcularTotal();
     
     // Construir el mensaje
-    let mensaje = `¡Hola, ${config.nombre_restaurante}! 🍖\n\n`;
+    let mensaje = `¡Hola, ${config.nombre_restaurante}!\n\n`;
     mensaje += `Quisiera realizar el siguiente pedido:\n\n`;
     mensaje += `*RESUMEN DEL PEDIDO:*\n`;
     
