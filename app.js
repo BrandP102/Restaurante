@@ -31,6 +31,7 @@ async function cargarMenu() {
         renderizarMenu();
         renderizarSidebar();
         actualizarFooter();
+        renderizarBanners();
     } catch (error) {
         console.error('Error al cargar el menú:', error);
         document.getElementById('carta-container').innerHTML = 
@@ -69,6 +70,80 @@ function renderizarMenu() {
 
         contenedor.appendChild(grid);
     });
+}
+
+// =========================================================================
+// RENDERIZADO DE BANNERS PUBLICITARIOS
+// =========================================================================
+function renderizarBanners() {
+    const contenedor = document.getElementById('banners-container');
+    if (!contenedor || !menuData.banners) return;
+    
+    // Filtrar solo los banners activos
+    const bannersActivos = menuData.banners.filter(b => b.activo === true);
+    
+    if (bannersActivos.length === 0) {
+        contenedor.style.display = 'none';
+        return;
+    }
+    
+    contenedor.innerHTML = '';
+    
+    bannersActivos.forEach(banner => {
+        const div = document.createElement('div');
+        div.className = 'banner';
+        
+        // Si tiene imagen, usarla como fondo
+        if (banner.imagen && banner.imagen.trim() !== '') {
+            div.classList.add('banner-con-imagen');
+            div.style.backgroundImage = `url('${banner.imagen}')`;
+            
+            const textoDiv = document.createElement('div');
+            textoDiv.className = 'banner-texto';
+            textoDiv.textContent = banner.texto;
+            div.appendChild(textoDiv);
+        } else {
+            // Sin imagen: solo texto con colores personalizados
+            div.style.backgroundColor = banner.color_fondo || '#d4a373';
+            div.style.color = banner.color_texto || '#000000';
+            div.textContent = banner.texto;
+        }
+        
+        // Si tiene enlace, hacerlo clickeable
+        if (banner.enlace && banner.enlace.trim() !== '') {
+            div.classList.add('banner-clickeable');
+            div.addEventListener('click', () => {
+                window.open(banner.enlace, '_blank');
+            });
+        }
+        
+        contenedor.appendChild(div);
+    });
+    
+    // Agregar indicadores de posición (solo si hay más de 1 banner)
+    if (bannersActivos.length > 1) {
+        const indicadores = document.createElement('div');
+        indicadores.className = 'banner-indicadores';
+        
+        bannersActivos.forEach((_, index) => {
+            const punto = document.createElement('span');
+            punto.className = 'punto' + (index === 0 ? ' activo' : '');
+            indicadores.appendChild(punto);
+        });
+        
+        contenedor.parentNode.insertBefore(indicadores, contenedor.nextSibling);
+        
+        // Detectar scroll para actualizar el indicador activo
+        contenedor.addEventListener('scroll', () => {
+            const scrollLeft = contenedor.scrollLeft;
+            const anchoBanner = contenedor.offsetWidth;
+            const indexActivo = Math.round(scrollLeft / anchoBanner);
+            
+            indicadores.querySelectorAll('.punto').forEach((p, i) => {
+                p.classList.toggle('activo', i === indexActivo);
+            });
+        });
+    }
 }
 
 function crearTarjetaProducto(producto, nombreCategoria) {
