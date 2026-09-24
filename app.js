@@ -109,11 +109,11 @@ function renderizarBanners() {
             div.textContent = banner.texto;
         }
         
-        // Si tiene enlace, hacerlo clickeable
-        if (banner.enlace && banner.enlace.trim() !== '') {
+        // Si tiene mensaje_whatsapp, hacerlo clickeable y enviar a WhatsApp
+        if (banner.mensaje_whatsapp && banner.mensaje_whatsapp.trim() !== '') {
             div.classList.add('banner-clickeable');
             div.addEventListener('click', () => {
-                window.open(banner.enlace, '_blank');
+                enviarBannerAWhatsApp(banner.mensaje_whatsapp);
             });
         }
         
@@ -122,6 +122,10 @@ function renderizarBanners() {
     
     // Agregar indicadores de posición (solo si hay más de 1 banner)
     if (bannersActivos.length > 1) {
+        // Eliminar indicadores previos si existen
+        const indicadoresPrevios = document.querySelector('.banner-indicadores');
+        if (indicadoresPrevios) indicadoresPrevios.remove();
+        
         const indicadores = document.createElement('div');
         indicadores.className = 'banner-indicadores';
         
@@ -144,6 +148,32 @@ function renderizarBanners() {
             });
         });
     }
+}
+
+// =========================================================================
+// FUNCIÓN PARA ENVIAR BANNER A WHATSAPP
+// =========================================================================
+function enviarBannerAWhatsApp(mensaje) {
+    if (!menuData || !menuData.configuracion) {
+        alert('Error al cargar la configuración. Recarga la página.');
+        return;
+    }
+    
+    const numero = menuData.configuracion.numero_whatsapp;
+    
+    if (!numero) {
+        alert('El número de WhatsApp no está configurado.');
+        return;
+    }
+    
+    // Codificar el mensaje para que sea válido en URL
+    const mensajeCodificado = encodeURIComponent(mensaje);
+    
+    // Generar URL de WhatsApp
+    const url = `https://wa.me/${numero}?text=${mensajeCodificado}`;
+    
+    // Abrir en nueva pestaña
+    window.open(url, '_blank');
 }
 
 function crearTarjetaProducto(producto, nombreCategoria) {

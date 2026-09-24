@@ -13,9 +13,9 @@
     {
       "id": 1,
       "activo": true,
-      "texto": "🔥 ¡HOY 2x1 EN HAMBURGUESAS! Válido solo para consumo en mesa.",
+      "texto": "🔥 ¡HOY 2x1 EN HAMBURGUESAS!",
       "imagen": "img/banner-2x1.jpg",
-      "enlace": "",
+      "mensaje_whatsapp": "Hola Llanera y Parrilla Restaurante\nQuiero aprovechar la promoción 2x1 en hamburguesas",
       "color_fondo": "#d4a373",
       "color_texto": "#000000"
     },
@@ -24,21 +24,11 @@
       "activo": true,
       "texto": "🎄 Cena Navideña - Reserva tu mesa con anticipación",
       "imagen": "img/banner-navidad.jpg",
-      "enlace": "https://wa.me/573001234567?text=Quiero%20reservar%20para%20Navidad",
+      "mensaje_whatsapp": "Hola Llanera y Parrilla Restaurante\nQuiero una Reserva para la cena navideña",
       "color_fondo": "#8b0000",
-      "color_texto": "#ffffff"
-    },
-    {
-      "id": 3,
-      "activo": false,
-      "texto": "Promoción desactivada (no se mostrará en la web)",
-      "imagen": "",
-      "enlace": "",
-      "color_fondo": "#333333",
       "color_texto": "#ffffff"
     }
   ],
-
   "categorias": [
     {
       "id": "especiales",
