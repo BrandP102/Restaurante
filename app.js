@@ -295,7 +295,7 @@ function comprarPorWhatsApp() {
     // Construir el mensaje
     let mensaje = `¡Hola, ${config.nombre_restaurante}! 🍖\n\n`;
     mensaje += `Quisiera realizar el siguiente pedido:\n\n`;
-    mensaje += `🛒 *RESUMEN DEL PEDIDO:*\n`;
+    mensaje += `*RESUMEN DEL PEDIDO:*\n`;
     
     carrito.forEach(item => {
         const subtotal = item.precio * item.cantidad;
