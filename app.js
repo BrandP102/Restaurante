@@ -303,9 +303,6 @@ function comprarPorWhatsApp() {
     });
     
     mensaje += `\n💰 *TOTAL: ${formatearPrecio(total)}*\n\n`;
-    mensaje += `Por favor, confírmenme si es para:\n`;
-    mensaje += `🏠 Domicilio (enviar dirección)\n`;
-    mensaje += `🍽️ Reserva de Mesa (indicar fecha y hora)\n\n`;
     mensaje += `¡Gracias!`;
     
     // Codificar y generar URL
