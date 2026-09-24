@@ -2,19 +2,19 @@
   "configuracion": {
     "nombre_restaurante": "Llanera y Parrilla Restaurante",
     "numero_whatsapp": "573238491894",
-    "hora_apertura": "12:00",
+    "hora_apertura": "15:00",
     "hora_cierre": "21:45",
     "moneda": "$",
     "mensaje_bienvenida": "¡Bienvenido a Llanera y Parrilla!",
-    "direccion": "Calle 123 #45-67, Bogotá",
-    "telefono_contacto": "3001234567"
+    "direccion": "Cra 6 # 10-68 , Miranda, Colombia, 191520",
+    "telefono_contacto": "314 7943064"
   },
   "banners": [
     {
       "id": 1,
       "activo": true,
       "texto": "🔥 ¡HOY 2x1 EN HAMBURGUESAS!",
-      "imagen": "img/banner-2x1.jpg",
+      "imagen": "./img/combo_2x1.png",
       "mensaje_whatsapp": "Hola Llanera y Parrilla Restaurante\nQuiero aprovechar la promoción 2x1 en hamburguesas",
       "color_fondo": "#d4a373",
       "color_texto": "#000000"
@@ -29,6 +29,25 @@
       "color_texto": "#ffffff"
     }
   ],
+  "legal": {
+    "aviso_cookies": {
+      "activo": true,
+      "texto": "🍪 Este sitio usa almacenamiento local (cookies técnicas) únicamente para recordar los productos de tu carrito. No rastreamos tus datos ni compartimos información con terceros.",
+      "texto_boton": "Entendido"
+    },
+    "privacidad": {
+      "titulo": "Aviso de Privacidad y Tratamiento de Datos",
+      "contenido": "En cumplimiento de la Ley 1581 de 2012 y el Decreto 1377 de 2013 de la República de Colombia, informamos que:\n\n1. RESPONSABLE DEL TRATAMIENTO:\nLlanera y Parrilla Restaurante, con domicilio en Calle 123 #45-67, Bogotá, es el responsable del tratamiento de los datos personales que los usuarios suministren a través de este sitio web.\n\n2. FINALIDAD:\nLos datos que el usuario comparte (nombre, teléfono, dirección) son utilizados exclusivamente para:\n- Gestionar pedidos a domicilio.\n- Confirmar y coordinar reservas de mesa.\n- Atender consultas relacionadas con el servicio.\n\n3. CANAL DE RECOLECCIÓN:\nLa plataforma web NO almacena datos personales en bases de datos propias. La información que el usuario ingresa es redirigida directamente al chat de WhatsApp del restaurante, donde se gestiona la conversación y el cierre del pedido.\n\n4. DERECHOS DEL TITULAR:\nEl usuario puede en cualquier momento conocer, actualizar, rectificar o solicitar la eliminación de sus datos personales escribiendo al WhatsApp oficial del restaurante o al correo electrónico de contacto.\n\n5. SEGURIDAD:\nNo realizamos pagos en línea. Todos los pagos se realizan de forma presencial y física, evitando el manejo de datos financieros en la plataforma.\n\nÚltima actualización: Enero 2025."
+    },
+    "terminos": {
+      "titulo": "Términos y Condiciones",
+      "contenido": "Al utilizar este sitio web, el usuario acepta los siguientes términos:\n\n1. NATURALEZA DEL SITIO:\nEsta plataforma web es una carta digital informativa e interactiva. Su función es permitir al usuario visualizar el menú y armar un pedido que será enviado vía WhatsApp al restaurante Llanera y Parrilla.\n\n2. HORARIO DE ATENCIÓN:\nEl servicio de pedidos está disponible únicamente dentro del horario de atención establecido: de 3:00 PM a 9:45 PM. Fuera de este horario el menú puede visualizarse, pero no es posible confirmar pedidos.\n\n3. TIPOS DE PEDIDO:\nEl usuario puede optar por:\n- Domicilio: sujeto a cobertura según la zona. La dirección y disponibilidad se confirman a través de WhatsApp.\n- Reserva de Mesa: sujeta a disponibilidad del restaurante. Se confirma por WhatsApp.\n\n4. PRECIOS Y PAGOS:\nLos precios mostrados en la web son informativos y pueden estar sujetos a cambios sin previo aviso. Todos los pagos se realizan de forma física y presencial (efectivo, tarjeta débito/crédito o transferencia) al momento de recibir el pedido o al llegar al restaurante.\n\n5. NO PAGOS EN LÍNEA:\nEsta plataforma NO procesa pagos en línea. No solicitamos datos financieros a través de la web.\n\n6. RESPONSABILIDAD:\nEl restaurante no se hace responsable por pedidos realizados fuera del horario establecido ni por datos mal ingresados por el usuario en el chat de WhatsApp.\n\n7. MODIFICACIONES:\nEl restaurante se reserva el derecho de modificar el menú, los precios y estos términos en cualquier momento.\n\nÚltima actualización: Enero 2025."
+    },
+    "cookies": {
+      "titulo": "Política de Cookies Técnicas",
+      "contenido": "Este sitio web utiliza exclusivamente cookies técnicas y almacenamiento local del navegador (LocalStorage).\n\n1. ¿QUÉ SON?\nSon archivos temporales que se guardan en el navegador del usuario para mejorar la experiencia de navegación.\n\n2. ¿QUÉ USAMOS?\nÚnicamente almacenamiento local (LocalStorage) con los siguientes fines:\n- Recordar los productos que el usuario ha agregado al carrito de compras, para que no se pierdan al recargar la página.\n- Recordar si el usuario ya aceptó el aviso de cookies, para no volver a mostrarlo.\n\n3. ¿QUÉ NO USAMOS?\n- NO utilizamos cookies de rastreo publicitario.\n- NO utilizamos cookies de terceros (Google Analytics, Facebook Pixel, etc.).\n- NO recopilamos información personal con fines de marketing.\n\n4. ¿CÓMO ELIMINARLAS?\nEl usuario puede eliminar las cookies y el almacenamiento local en cualquier momento desde la configuración de su navegador.\n\n5. ACEPTACIÓN:\nEl uso continuo de este sitio implica la aceptación de estas cookies técnicas de carácter estrictamente funcional.\n\nÚltima actualización: Enero 2025."
+    }
+  },
   "categorias": [
     {
       "id": "especiales",
@@ -41,49 +60,49 @@
           "nombre": "Chorizo De La Casa",
           "descripcion": "Chorizo de cerdo artesanal de la casa, papa y salsas de la casa.",
           "precio": 10000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Chorizo+de+la+Casa"
+          "imagen": "./img/chorizo_casa.png"
         },
         {
           "id": 2,
           "nombre": "Corte De Carne Lomo Caracho Angus 300 Gr",
           "descripcion": "Viene acompañado de papa, maduro y ensalada.",
           "precio": 30000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Corte+de+Carne"
+          "imagen": "./img/corte_carne_lomo_caracho_angus_300.png"
         },
         {
           "id": 3,
           "nombre": "Costillon De Cerdo",
           "descripcion": "Exquisita costilla con chicharrón crocante acompañado de papa amarilla, arepa y guacamole.",
           "precio": 32000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Costillon+de+Cerdo"
+          "imagen": "./img/costillon_cerdo.png"
         },
         {
           "id": 4,
           "nombre": "Pechuga Ranchera",
           "descripcion": "Deliciosa pechuga a la parrilla bañada en queso fundido y salchicha tipo ranchera.",
           "precio": 30000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Pechuga+Ranchera"
+          "imagen": "./img/pechuga_ranchera.png"
         },
         {
           "id": 5,
           "nombre": "Pollo Grillet 300g",
           "descripcion": "Viene acompañado de tocineta y papas a la francesa.",
           "precio": 28000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Pollo+Grillet"
+          "imagen": "./img/pollo_grillet.png"
         },
         {
           "id": 6,
           "nombre": "Punta De Anca Angus 300gr",
           "descripcion": "Viene acompañado de papa, maduro y ensalada.",
           "precio": 36000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Punta+de+Anca"
+          "imagen": "./img/punta_anca_angus.png"
         },
         {
           "id": 7,
           "nombre": "Bondiola Personal",
           "descripcion": "Deliciosa bondiola al barril acompañada de papa y arepa y salsa a tu elección.",
           "precio": 18000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Bondiola+Personal"
+          "imagen": "./img/bondiola.png"
         }
       ]
     },
@@ -98,14 +117,14 @@
           "nombre": "Burrito Llanero",
           "descripcion": "Delicioso burrito llanero viene acompañado de nachos y guacamole.",
           "precio": 20000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Burrito+Llanero"
+          "imagen": "./img/burrito_mixtos_llaneros.png"
         },
         {
           "id": 11,
           "nombre": "Burrito Mixto",
           "descripcion": "Delicioso burrito llanero viene acompañado de nachos y guacamole.",
           "precio": 24000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Burrito+Mixto"
+          "imagen": "./img/burrito_mixtos_llaneros.png"
         }
       ]
     },
@@ -120,49 +139,49 @@
           "nombre": "Combo 2x1 De 27",
           "descripcion": "2 hamburguesas de la casa con papitas a la francesa y 2 gaseosas personales.",
           "precio": 27000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Combo+2x1"
+          "imagen": "./img/combo_2x1.png"
         },
         {
           "id": 21,
           "nombre": "Hamburguesa De La Casa",
           "descripcion": "Todas nuestras hamburguesas llevan pan brioche, queso mozarella, tocineta ahumada, lechuga crespa, cebolla, tomate salsas de la casa y papas a la francesa.",
           "precio": 22000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Hamburguesa+Casa"
+          "imagen": "./img/hamburguesa_casa.png"
         },
         {
           "id": 22,
           "nombre": "Hamburguesa Cheddar Paradise",
           "descripcion": "Deliciosa hamburguesa cheddar paradise viene acompañada de papas a la francesa y salsa de la casa.",
           "precio": 28000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Cheddar+Paradise"
+          "imagen": "./img/hamburguesa_cheddar_paradise_doble_carne.png"
         },
         {
           "id": 23,
           "nombre": "Hamburguesa Cheddar Paradise Doble Carne",
           "descripcion": "Dos carnes de 150gr cada una, queso mozzarella extra, queso cheddar y tocineta premium.",
           "precio": 32000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Cheddar+Doble"
+          "imagen": "./img/hamburguesa_cheddar_paradise_doble_carne.png"
         },
         {
           "id": 24,
           "nombre": "Hamburguesa De La Casa Doble Carne",
           "descripcion": "Todas nuestras hamburguesas llevan pan brioche, queso mozarella, tocineta ahumada, lechuga crespa, cebolla, tomate salsas de la casa y papas a la francesa.",
           "precio": 26000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Casa+Doble"
+          "imagen": "./img/hamburguesa_casa_doble_carne.png"
         },
         {
           "id": 25,
           "nombre": "Hamburguesa Llanera",
           "descripcion": "Deliciosa hamburguesa llanera viene acompañada de papas a la francesa y salsa de la casa.",
           "precio": 27000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Hamburguesa+Llanera"
+          "imagen": "./img/hamburguesa_llanera_doble_carne.png"
         },
         {
           "id": 26,
           "nombre": "Hamburguesa Llanera Doble Carne",
           "descripcion": "Deliciosa hamburguesa llanera doble carne viene acompañada de papas a la francesa y salsa de la casa.",
           "precio": 31000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Llanera+Doble"
+          "imagen": "./img/hamburguesa_llanera_doble_carne.png"
         }
       ]
     },
@@ -177,14 +196,14 @@
           "nombre": "Parrillada Al Parque Familiar",
           "descripcion": "5 tipos de carne (llanera, costilla, pollo, churrasco, chorizo). Viene acompañado de patacones, papa amarilla, chimichurri y ají.",
           "precio": 58000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Parrillada+Familiar"
+          "imagen": "./img/parrillada_cuatro_familiar.png"
         },
         {
           "id": 31,
           "nombre": "Parrillada Al Parque Para Cuatro",
           "descripcion": "5 tipos de carne (llanera, costilla, pollo, churrasco, chorizo). Viene acompañado de patacones, papa amarilla, chimichurri y ají.",
           "precio": 41000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Parrillada+Cuatro"
+          "imagen": "./img/parrillada_cuatro_familiar.png"
         }
       ]
     },
@@ -199,140 +218,140 @@
           "nombre": "Cerveza Aguila Light",
           "descripcion": "Deliciosa cerveza Aguila Light.",
           "precio": 6000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Aguila+Light"
+          "imagen": "./img/cerveza_aguila.png"
         },
         {
           "id": 41,
           "nombre": "Cerveza Club Colombia Dorada",
           "descripcion": "Deliciosa cerveza Club Colombia.",
           "precio": 7000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Club+Colombia"
+          "imagen": "./img/cerveza_club_colombia_dorada.png"
         },
         {
           "id": 42,
           "nombre": "Cerveza Corona",
           "descripcion": "Deliciosa cerveza Corona.",
           "precio": 9000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Corona"
+          "imagen": "./img/cerveza_corona.png"
         },
         {
           "id": 43,
           "nombre": "Cerveza Poker",
           "descripcion": "Deliciosa cerveza Poker.",
           "precio": 5000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Poker"
+          "imagen": "./img/cerveza_poker.png"
         },
         {
           "id": 44,
           "nombre": "Haibal",
           "descripcion": "Soda italiana con licor.",
           "precio": 16000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Haibal"
+          "imagen": "./img/soda_italiana_haibal.png"
         },
         {
           "id": 45,
           "nombre": "Jarra De Sangría",
           "descripcion": "Jarra de sangría de la casa.",
           "precio": 60000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Jarra+Sangria"
+          "imagen": "./img/jarra_sangria.png"
         },
         {
           "id": 46,
           "nombre": "Limonada De Vino Tinto",
           "descripcion": "Refrescante limonada de vino tinto.",
           "precio": 13000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Vino"
+          "imagen": "./img/limonada_vino_tinto.png"
         },
         {
           "id": 47,
           "nombre": "Soda Italianas",
           "descripcion": "Soda italiana de tu sabor preferido.",
           "precio": 12000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Soda+Italiana"
+          "imagen": "./img/soda_italiana_haibal.png"
         },
         {
           "id": 48,
           "nombre": "Frutas Amarillos",
           "descripcion": "Mango, maracuyá, piña.",
           "precio": 12000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Frutas+Amarillos"
+          "imagen": "./img/frutos_amarillos.png"
         },
         {
           "id": 49,
           "nombre": "Frutas Rojos",
           "descripcion": "Mora, fresa, cereza.",
           "precio": 12000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Frutas+Rojos"
+          "imagen": "./img/frutos_rojos.png"
         },
         {
           "id": 50,
           "nombre": "Limonada Cerezada Jarra",
           "descripcion": "Deliciosa jarra de limonada cerezada.",
           "precio": 28000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Cerezada"
+          "imagen": "./img/limonada_cerezada_jarra.png"
         },
         {
           "id": 51,
           "nombre": "Limonada De Coco Jarra",
           "descripcion": "Jarra de limonada de coco.",
           "precio": 28000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Coco"
+          "imagen": "./img/limonada_coco_jarra.png"
         },
         {
           "id": 52,
           "nombre": "Limonada De La Casa Vaso",
           "descripcion": "Limonada de la casa.",
           "precio": 6000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Casa"
+          "imagen": "./img/limonada_casa_vaso.png"
         },
         {
           "id": 53,
           "nombre": "Limonada Jarra",
           "descripcion": "Deliciosa jarra de limonada artesanal francés.",
           "precio": 14000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Limonada+Jarra"
+          "imagen": "./img/limonada_jarra.png"
         },
         {
           "id": 54,
           "nombre": "Botella De Agua 600ml",
           "descripcion": "Botella de agua.",
           "precio": 3000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Agua"
+          "imagen": "./img/agua.png"
         },
         {
           "id": 55,
           "nombre": "Cocacola 1.5",
           "descripcion": "Coca cola 1.5.",
           "precio": 9000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=CocaCola+1.5"
+          "imagen": "./img/cocacola_1-5.png"
         },
         {
           "id": 56,
           "nombre": "Cocacola 3.125",
           "descripcion": "Coca cola 3 litros.",
           "precio": 12000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=CocaCola+3.125"
+          "imagen": "./img/cocacola_3125.png"
         },
         {
           "id": 57,
           "nombre": "Cocacola 400 Ml",
           "descripcion": "Coca cola.",
           "precio": 4500,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=CocaCola+400"
+          "imagen": "./img/cocacola_400.png"
         },
         {
           "id": 58,
           "nombre": "Hit Personal 500ml",
           "descripcion": "Hit personal.",
           "precio": 5000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Hit"
+          "imagen": "./img/jugo_hit.png"
         },
         {
           "id": 59,
           "nombre": "Soda Personal",
           "descripcion": "Soda personal.",
           "precio": 4500,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Soda+Personal"
+          "imagen": "./img/soda.png"
         }
       ]
     },
@@ -347,91 +366,91 @@
           "nombre": "Arepitas Fritas",
           "descripcion": "Arepitas fritas.",
           "precio": 4000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Arepitas"
+          "imagen": "./img/arepitas_fritas.png"
         },
         {
           "id": 71,
           "nombre": "Ensalada",
           "descripcion": "Ensalada fresca.",
           "precio": 3000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Ensalada"
+          "imagen": "./img/ensalada.png"
         },
         {
           "id": 72,
           "nombre": "Guacamole",
           "descripcion": "Guacamole fresco.",
           "precio": 4000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Guacamole"
+          "imagen": "./img/guacamole.png"
         },
         {
           "id": 73,
           "nombre": "Maduro Frito",
           "descripcion": "Maduro frito.",
           "precio": 4000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Maduro+Frito"
+          "imagen": "./img/maduro_frito.png"
         },
         {
           "id": 74,
           "nombre": "Maicitos",
           "descripcion": "Maicitos.",
           "precio": 3000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Maicitos"
+          "imagen": "./img/maicitos.png"
         },
         {
           "id": 75,
           "nombre": "Papa Cocinada",
           "descripcion": "Papa cocinada.",
           "precio": 4000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Papa+Cocinada"
+          "imagen": "./img/papa_cocinada.png"
         },
         {
           "id": 76,
           "nombre": "Papas Francesas",
           "descripcion": "Papas francesas.",
           "precio": 6000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Papas+Francesas"
+          "imagen": "./img/papas_francesas.png"
         },
         {
           "id": 77,
           "nombre": "Porción De Aguacate",
           "descripcion": "Porción de aguacate.",
           "precio": 5000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Aguacate"
+          "imagen": "./img/porcion_aguacate.png"
         },
         {
           "id": 78,
           "nombre": "Porción De Arroz",
           "descripcion": "Porción de arroz.",
           "precio": 4000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Arroz"
+          "imagen": "./img/porcion_arroz.png"
         },
         {
           "id": 79,
           "nombre": "Queso Mozzarella",
           "descripcion": "Queso mozzarella.",
           "precio": 4000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Queso"
+          "imagen": "./img/queso_mozzarella.png"
         },
         {
           "id": 80,
           "nombre": "Tocineta Ahumada",
           "descripcion": "Tocineta ahumada.",
           "precio": 4000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Tocineta"
+          "imagen": "./img/tocineta_ahumada.png"
         },
         {
           "id": 81,
           "nombre": "Yuca Cocinada",
           "descripcion": "Yuca cocinada.",
           "precio": 5000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Yuca"
+          "imagen": "./img/yuca_cocinada.png"
         },
         {
           "id": 82,
-          "nombre": "Yuguita Frita",
-          "descripcion": "Yuguita frita.",
+          "nombre": "Yuquita Frita",
+          "descripcion": "Yuquita frita.",
           "precio": 6000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Yuguita"
+          "imagen": "./img/yuquita_frita.png"
         }
       ]
     },
@@ -446,28 +465,28 @@
           "nombre": "Costillas Pollo Y Chorizo Familiar",
           "descripcion": "Deliciosa costilla bbq, pollo y chorizo viene acompañado de papa amarilla y maduro.",
           "precio": 62000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Costillas+Pollo"
+          "imagen": "./img/costillitas_bbq_pollo_dos_cuatro_familiar.png"
         },
         {
           "id": 91,
           "nombre": "Mixto Familiar",
           "descripcion": "Todos los platos vienen acompañados de papa, yuca, maduro, chimichurri y ají.",
           "precio": 62000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Mix+Familiar"
+          "imagen": "./img/mixto_cuatro_familiar.png"
         },
         {
           "id": 92,
           "nombre": "Wok Paisa Duo X 800",
           "descripcion": "Nuestro arroz salteado con pollo, costilla ahumada, chorizo, tocineta y vegetales.",
           "precio": 24000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Wok+Paisa"
+          "imagen": "./img/wok_paisa.png"
         },
         {
           "id": 93,
           "nombre": "Wok Chino Personal",
           "descripcion": "Nuestro arroz salteado con pollo, camarones, jamón y vegetales.",
           "precio": 14000,
-          "imagen": "https://via.placeholder.com/600x400/d4a373/ffffff?text=Wok+Chino"
+          "imagen": "./img/wok_chino.png"
         }
       ]
     }

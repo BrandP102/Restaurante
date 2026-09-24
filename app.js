@@ -32,6 +32,7 @@ async function cargarMenu() {
         renderizarSidebar();
         actualizarFooter();
         renderizarBanners();
+        inicializarLegal();
     } catch (error) {
         console.error('Error al cargar el menú:', error);
         document.getElementById('carta-container').innerHTML = 
@@ -547,6 +548,7 @@ function inicializarEventos() {
     document.getElementById('overlay').addEventListener('click', () => {
         document.getElementById('sidebar-menu').classList.remove('abierto');
         document.getElementById('panel-carrito').classList.remove('abierto');
+        document.getElementById('modal-legal').classList.remove('abierto');
         cerrarModalProducto();
     });
 }
@@ -562,6 +564,76 @@ styleAnim.textContent = `
     }
 `;
 document.head.appendChild(styleAnim);
+
+// =========================================================================
+// AVISO DE COOKIES Y TEXTOS LEGALES
+// =========================================================================
+function inicializarLegal() {
+    if (!menuData.legal) return;
+    
+    // Año actual en el footer
+    document.getElementById('anio-actual').textContent = new Date().getFullYear();
+    
+    // ----- AVISO DE COOKIES -----
+    const avisoCookies = document.getElementById('aviso-cookies');
+    const avisoCookiesTexto = document.getElementById('aviso-cookies-texto');
+    const btnAceptarCookies = document.getElementById('btn-aceptar-cookies');
+    
+    const cookiesAceptadas = localStorage.getItem('cookies_aceptadas_llanera');
+    
+    if (!cookiesAceptadas && menuData.legal.aviso_cookies.activo) {
+        avisoCookiesTexto.textContent = menuData.legal.aviso_cookies.texto;
+        btnAceptarCookies.textContent = menuData.legal.aviso_cookies.texto_boton;
+        
+        // Mostrar con un pequeño retraso para que no aparezca de inmediato
+        setTimeout(() => {
+            avisoCookies.classList.add('visible');
+        }, 1500);
+        
+        btnAceptarCookies.addEventListener('click', () => {
+            localStorage.setItem('cookies_aceptadas_llanera', 'true');
+            avisoCookies.classList.remove('visible');
+            setTimeout(() => avisoCookies.style.display = 'none', 400);
+        });
+    }
+    
+    // ----- MODAL LEGAL -----
+    const modalLegal = document.getElementById('modal-legal');
+    const modalLegalTitulo = document.getElementById('modal-legal-titulo');
+    const modalLegalTexto = document.getElementById('modal-legal-texto');
+    const cerrarModalLegal = document.getElementById('cerrar-modal-legal');
+    
+    function abrirModalLegal(tipo) {
+        if (!menuData.legal[tipo]) return;
+        
+        modalLegalTitulo.textContent = menuData.legal[tipo].titulo;
+        modalLegalTexto.textContent = menuData.legal[tipo].contenido;
+        modalLegal.classList.add('abierto');
+        document.getElementById('overlay').classList.add('visible');
+    }
+    
+    function cerrarModalLegalFn() {
+        modalLegal.classList.remove('abierto');
+        document.getElementById('overlay').classList.remove('visible');
+    }
+    
+    document.getElementById('link-privacidad').addEventListener('click', (e) => {
+        e.preventDefault();
+        abrirModalLegal('privacidad');
+    });
+    
+    document.getElementById('link-terminos').addEventListener('click', (e) => {
+        e.preventDefault();
+        abrirModalLegal('terminos');
+    });
+    
+    document.getElementById('link-cookies').addEventListener('click', (e) => {
+        e.preventDefault();
+        abrirModalLegal('cookies');
+    });
+    
+    cerrarModalLegal.addEventListener('click', cerrarModalLegalFn);
+}
 
 // Exponer funciones al scope global (para los onclick inline)
 window.cambiarCantidad = cambiarCantidad;

@@ -41,9 +41,33 @@
     </div>
 
     <!-- FOOTER -->
-    <footer style="text-align: center; padding: 30px; color: #555; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 40px;">
+    <!-- FOOTER CON ENLACES LEGALES -->
+    <footer>
         <p id="footer-info"></p>
+        <div class="footer-legal">
+            <a href="#" id="link-privacidad">Aviso de Privacidad</a>
+            <span>·</span>
+            <a href="#" id="link-terminos">Términos y Condiciones</a>
+            <span>·</span>
+            <a href="#" id="link-cookies">Política de Cookies</a>
+        </div>
+        <p class="footer-copyright">© <span id="anio-actual"></span> Llanera y Parrilla. Todos los derechos reservados.</p>
     </footer>
+
+    <!-- AVISO DE COOKIES (Flotante, aparece una sola vez) -->
+    <div id="aviso-cookies">
+        <p id="aviso-cookies-texto"></p>
+        <button id="btn-aceptar-cookies">Entendido</button>
+    </div>
+
+    <!-- MODAL LEGAL (Para Privacidad, Términos y Cookies) -->
+    <div id="modal-legal">
+        <div class="modal-legal-contenido">
+            <button class="modal-legal-cerrar" id="cerrar-modal-legal">&times;</button>
+            <h2 id="modal-legal-titulo"></h2>
+            <div id="modal-legal-texto"></div>
+        </div>
+    </div>
 
     <!-- MODAL DE PRODUCTO -->
     <div id="modal-producto">
