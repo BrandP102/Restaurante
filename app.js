@@ -73,8 +73,12 @@ function renderizarMenu() {
 }
 
 // =========================================================================
-// RENDERIZADO DE BANNERS PUBLICITARIOS
+// RENDERIZADO DE BANNERS PUBLICITARIOS (SLIDER AUTOMÁTICO)
 // =========================================================================
+let intervaloBanners = null;
+let bannerActual = 0;
+let totalBanners = 0;
+
 function renderizarBanners() {
     const contenedor = document.getElementById('banners-container');
     if (!contenedor || !menuData.banners) return;
@@ -88,10 +92,17 @@ function renderizarBanners() {
     }
     
     contenedor.innerHTML = '';
+    totalBanners = bannersActivos.length;
+    bannerActual = 0;
     
-    bannersActivos.forEach(banner => {
+    // Detener cualquier intervalo previo
+    if (intervaloBanners) clearInterval(intervaloBanners);
+    
+    bannersActivos.forEach((banner, index) => {
         const div = document.createElement('div');
         div.className = 'banner';
+        if (index === 0) div.classList.add('activo'); // El primero está activo
+        div.dataset.index = index;
         
         // Si tiene imagen, usarla como fondo
         if (banner.imagen && banner.imagen.trim() !== '') {
@@ -109,7 +120,7 @@ function renderizarBanners() {
             div.textContent = banner.texto;
         }
         
-        // Si tiene mensaje_whatsapp, hacerlo clickeable y enviar a WhatsApp
+        // Si tiene mensaje_whatsapp, hacerlo clickeable
         if (banner.mensaje_whatsapp && banner.mensaje_whatsapp.trim() !== '') {
             div.classList.add('banner-clickeable');
             div.addEventListener('click', () => {
@@ -121,33 +132,68 @@ function renderizarBanners() {
     });
     
     // Agregar indicadores de posición (solo si hay más de 1 banner)
-    if (bannersActivos.length > 1) {
-        // Eliminar indicadores previos si existen
+    if (totalBanners > 1) {
         const indicadoresPrevios = document.querySelector('.banner-indicadores');
         if (indicadoresPrevios) indicadoresPrevios.remove();
         
         const indicadores = document.createElement('div');
         indicadores.className = 'banner-indicadores';
         
-        bannersActivos.forEach((_, index) => {
+        for (let i = 0; i < totalBanners; i++) {
             const punto = document.createElement('span');
-            punto.className = 'punto' + (index === 0 ? ' activo' : '');
+            punto.className = 'punto' + (i === 0 ? ' activo' : '');
+            punto.dataset.index = i;
+            
+            // Permitir clic en los puntos para ir a ese banner
+            punto.addEventListener('click', () => {
+                cambiarBanner(i);
+                reiniciarIntervaloBanners();
+            });
+            
             indicadores.appendChild(punto);
-        });
+        }
         
         contenedor.parentNode.insertBefore(indicadores, contenedor.nextSibling);
         
-        // Detectar scroll para actualizar el indicador activo
-        contenedor.addEventListener('scroll', () => {
-            const scrollLeft = contenedor.scrollLeft;
-            const anchoBanner = contenedor.offsetWidth;
-            const indexActivo = Math.round(scrollLeft / anchoBanner);
-            
-            indicadores.querySelectorAll('.punto').forEach((p, i) => {
-                p.classList.toggle('activo', i === indexActivo);
-            });
-        });
+        // Iniciar rotación automática
+        iniciarIntervaloBanners();
     }
+}
+
+// =========================================================================
+// FUNCIONES DEL SLIDER
+// =========================================================================
+function cambiarBanner(nuevoIndex) {
+    const contenedor = document.getElementById('banners-container');
+    const banners = contenedor.querySelectorAll('.banner');
+    const indicadores = document.querySelectorAll('.banner-indicadores .punto');
+    
+    if (banners.length === 0) return;
+    
+    // Ajustar el índice si se sale del rango
+    if (nuevoIndex >= banners.length) nuevoIndex = 0;
+    if (nuevoIndex < 0) nuevoIndex = banners.length - 1;
+    
+    // Desactivar todos
+    banners.forEach(b => b.classList.remove('activo'));
+    indicadores.forEach(p => p.classList.remove('activo'));
+    
+    // Activar el nuevo
+    banners[nuevoIndex].classList.add('activo');
+    if (indicadores[nuevoIndex]) indicadores[nuevoIndex].classList.add('activo');
+    
+    bannerActual = nuevoIndex;
+}
+
+function iniciarIntervaloBanners() {
+    intervaloBanners = setInterval(() => {
+        cambiarBanner(bannerActual + 1);
+    }, 5000); // 5000 ms = 5 segundos
+}
+
+function reiniciarIntervaloBanners() {
+    if (intervaloBanners) clearInterval(intervaloBanners);
+    iniciarIntervaloBanners();
 }
 
 // =========================================================================
@@ -166,13 +212,9 @@ function enviarBannerAWhatsApp(mensaje) {
         return;
     }
     
-    // Codificar el mensaje para que sea válido en URL
     const mensajeCodificado = encodeURIComponent(mensaje);
-    
-    // Generar URL de WhatsApp
     const url = `https://wa.me/${numero}?text=${mensajeCodificado}`;
     
-    // Abrir en nueva pestaña
     window.open(url, '_blank');
 }
 

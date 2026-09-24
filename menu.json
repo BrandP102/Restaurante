@@ -23,7 +23,7 @@
       "id": 2,
       "activo": true,
       "texto": "🎄 Cena Navideña - Reserva tu mesa con anticipación",
-      "imagen": "img/banner-navidad.jpg",
+      "imagen": "img/cena_navideña.png",
       "mensaje_whatsapp": "Hola Llanera y Parrilla Restaurante\nQuiero una Reserva para la cena navideña",
       "color_fondo": "#8b0000",
       "color_texto": "#ffffff"
