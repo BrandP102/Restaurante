@@ -302,7 +302,6 @@ function comprarPorWhatsApp() {
         mensaje += `• ${item.cantidad}x ${item.nombre} (${formatearPrecio(item.precio)} c/u) = ${formatearPrecio(subtotal)}\n`;
     });
     
-    mensaje += `\n💰 *TOTAL: ${formatearPrecio(total)}*\n\n`;
     mensaje += `¡Gracias!`;
     
     // Codificar y generar URL
