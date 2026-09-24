@@ -4,7 +4,7 @@
 
 // Variables globales
 let menuData = null;
-let carrito = JSON.parse(localStorage.getItem('carrito_llanera')) || [];
+let carrito = []; 
 let productoSeleccionadoModal = null;
 
 // =========================================================================
@@ -441,7 +441,7 @@ function comprarPorWhatsApp() {
     const total = calcularTotal();
     
     // Construir el mensaje
-    let mensaje = `¡Hola, ${config.nombre_restaurante}!\n\n`;
+    let mensaje = `¡Hola, ${config.nombre_restaurante}! \n\n`;
     mensaje += `Quisiera realizar el siguiente pedido:\n\n`;
     mensaje += `*RESUMEN DEL PEDIDO:*\n`;
     
@@ -452,17 +452,21 @@ function comprarPorWhatsApp() {
     
     mensaje += `¡Gracias!`;
     
-    // Codificar y generar URL
+    // Codificar y abrir WhatsApp
     const mensajeCodificado = encodeURIComponent(mensaje);
     const url = `https://wa.me/${config.numero_whatsapp}?text=${mensajeCodificado}`;
-    
     window.open(url, '_blank');
     
-    // Opcional: vaciar el carrito después de enviar
-    // carrito = [];
-    // guardarCarrito();
-    // actualizarCarritoUI();
-    // cerrarPanelCarrito();
+    // --- REINICIAR EL CARRITO DE INMEDIATO ---
+    carrito = [];
+    actualizarCarritoUI();
+    
+    // Cerrar panel del carrito
+    document.getElementById('panel-carrito').classList.remove('abierto');
+    document.getElementById('overlay').classList.remove('visible');
+    
+    // Notificar al cliente
+    mostrarNotificacion('✅ Pedido enviado. El carrito fue reiniciado.');
 }
 
 // =========================================================================
