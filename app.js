@@ -639,6 +639,88 @@ function inicializarLegal() {
     cerrarModalLegal.addEventListener('click', cerrarModalLegalFn);
 }
 
+// =========================================================================
+// REGISTRO DEL SERVICE WORKER (PWA)
+// =========================================================================
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then((registration) => {
+                console.log('✅ Service Worker registrado:', registration.scope);
+            })
+            .catch((error) => {
+                console.warn('❌ Error al registrar Service Worker:', error);
+            });
+    });
+}
+
+// =========================================================================
+// DETECCIÓN DE INSTALACIÓN PWA (Muestra un botón personalizado)
+// =========================================================================
+let eventoInstalacionPWA = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    eventoInstalacionPWA = e;
+    mostrarBotonInstalar();
+});
+
+function mostrarBotonInstalar() {
+    // Evitar mostrar varias veces
+    if (document.getElementById('btn-instalar-pwa')) return;
+    
+    const btn = document.createElement('button');
+    btn.id = 'btn-instalar-pwa';
+    btn.innerHTML = '📲 Instalar App';
+    btn.style.cssText = `
+        position: fixed;
+        bottom: 90px;
+        left: 20px;
+        background: #d4a373;
+        color: #000;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        z-index: 1005;
+        box-shadow: 0 4px 15px rgba(212, 163, 115, 0.6);
+        font-family: 'Poppins', sans-serif;
+        animation: pulse 2s infinite;
+    `;
+    
+    // Animación de pulso
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    btn.addEventListener('click', async () => {
+        if (!eventoInstalacionPWA) return;
+        eventoInstalacionPWA.prompt();
+        const { outcome } = await eventoInstalacionPWA.userChoice;
+        if (outcome === 'accepted') {
+            console.log('✅ App instalada');
+        }
+        eventoInstalacionPWA = null;
+        btn.remove();
+    });
+    
+    document.body.appendChild(btn);
+}
+
+// Detectar si ya está instalada (no mostrar el botón)
+window.addEventListener('appinstalled', () => {
+    console.log('PWA instalada correctamente');
+    const btn = document.getElementById('btn-instalar-pwa');
+    if (btn) btn.remove();
+});
+
 // Exponer funciones al scope global (para los onclick inline)
 window.cambiarCantidad = cambiarCantidad;
 window.eliminarDelCarrito = eliminarDelCarrito;

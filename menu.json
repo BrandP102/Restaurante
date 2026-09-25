@@ -255,14 +255,14 @@
           "nombre": "Haibal",
           "descripcion": "Soda italiana con licor.",
           "precio": 16000,
-          "imagen": "./img/soda_italiana_haibal.png"
+          "imagen": "./img/sangria.png"
         },
         {
           "id": 45,
           "nombre": "Jarra De Sangría",
           "descripcion": "Jarra de sangría de la casa.",
           "precio": 60000,
-          "imagen": "./img/jarra_sangria.png"
+          "imagen": "./img/sangria.png"
         },
         {
           "id": 46,
