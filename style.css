@@ -1,6 +1,6 @@
 /* --- VARIABLES DE ESTILO STEAKHOUSE --- */
 :root {
-    --color-fondo: #0a0a0a;
+    --color-fondo: #000;
     --color-tarjeta: #151515;
     --color-primario: #d4a373;
     --color-primario-hover: #c08c5a;
@@ -21,6 +21,121 @@ body {
     background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
     background-size: 20px 20px;
     padding-bottom: 100px; /* Espacio para el carrito flotante */
+    position: relative;
+}
+
+/* ============================================================= */
+/* FONDO DE LLAMAS REALISTAS - COBERTURA TOTAL                   */
+/* ============================================================= */
+
+/* Contenedor principal del fondo de llamas */
+#fondo-llamas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* ← CUBRE TODA LA PANTALLA */
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: #000; /* Base negra */
+}
+
+/* Cada llama */
+.llama {
+    position: absolute;
+    bottom: -10%;
+    border-radius: 50% 50% 25% 25% / 70% 70% 30% 30%;
+    filter: blur(8px); /* ← Blur reducido para un 80% de nitidez */
+    transform-origin: bottom center;
+    will-change: transform, opacity;
+    opacity: 0.55;
+}
+
+/* --- LLAMA 1: Izquierda grande --- */
+.llama-1 {
+    left: -5%;
+    width: 40vw;
+    height: 90vh; /* ← MÁS ALTA para que suba por toda la pantalla */
+    background: radial-gradient(
+        ellipse at 50% 100%,
+        #ffdd33 0%,
+        #ff8800 15%,
+        #ee3300 35%,
+        #660000 65%,
+        transparent 90%
+    );
+    animation: llamaLenta 10s ease-in-out infinite alternate;
+}
+
+/* --- LLAMA 2: Centro-izquierda --- */
+.llama-2 {
+    left: 15%;
+    width: 35vw;
+    height: 80vh;
+    background: radial-gradient(
+        ellipse at 50% 100%,
+        #ffcc22 0%,
+        #ff7700 18%,
+        #dd2200 40%,
+        #550000 70%,
+        transparent 95%
+    );
+    animation: llamaLenta 12s ease-in-out infinite alternate;
+    animation-delay: -3s;
+}
+
+/* --- LLAMA 3: Centro-derecha --- */
+.llama-3 {
+    right: 15%;
+    width: 37vw;
+    height: 85vh;
+    background: radial-gradient(
+        ellipse at 50% 100%,
+        #ffdd33 0%,
+        #ff8800 15%,
+        #ee3300 38%,
+        #660000 68%,
+        transparent 92%
+    );
+    animation: llamaLenta 11s ease-in-out infinite alternate;
+    animation-delay: -5s;
+}
+
+/* --- LLAMA 4: Derecha grande --- */
+.llama-4 {
+    right: -5%;
+    width: 40vw;
+    height: 90vh;
+    background: radial-gradient(
+        ellipse at 50% 100%,
+        #ffcc22 0%,
+        #ff7700 18%,
+        #dd2200 40%,
+        #550000 70%,
+        transparent 95%
+    );
+    animation: llamaLenta 13s ease-in-out infinite alternate;
+    animation-delay: -2s;
+}
+
+/* --- Capa de transición: hace que la parte de arriba sea más oscura --- */
+#fondo-llamas::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.95) 0%,     /* Arriba: casi negro */
+        rgba(0, 0, 0, 0.75) 30%,    /* Transición suave */
+        rgba(0, 0, 0, 0.4) 60%,     /* Se aclara */
+        rgba(0, 0, 0, 0) 100%       /* Abajo: deja ver las llamas */
+    );
+    pointer-events: none;
+    z-index: 2;
 }
 
 /* --- CABECERA --- */
@@ -30,6 +145,7 @@ header {
     border-bottom: 2px solid var(--color-primario);
     position: sticky; top: 0; z-index: 1000;
     box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    z-index: 1000;
 }
 header img {
     max-width: 160px; height: auto; display: block; margin: 0 auto;
@@ -105,7 +221,7 @@ header img {
 #overlay.visible { opacity: 1; visibility: visible; }
 
 /* --- CONTENEDOR --- */
-.container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 15px; position: relative; z-index: 1; }
 
 /* --- TÍTULOS DE SECCIÓN --- */
 .seccion-titulo {
@@ -423,6 +539,8 @@ footer {
     font-size: 0.8rem;
     border-top: 1px solid #222;
     margin-top: 40px;
+    position: relative;
+    z-index: 1;
 }
 .footer-legal {
     margin-top: 15px;
@@ -596,4 +714,51 @@ footer {
     .grid-platos { grid-template-columns: repeat(3, 1fr); }
     .modal-contenido { max-width: 600px; }
     .modal-imagen { height: 320px; }
+}
+
+/* ============================================================= */
+/* ANIMACIÓN SUAVE DE LAS LLAMAS                                 */
+/* ============================================================= */
+
+@keyframes llamaLenta {
+    0% {
+        transform: scaleY(1) scaleX(1) translateY(0) rotate(0deg);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scaleY(1.06) scaleX(0.98) translateY(-20px) rotate(-1deg);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scaleY(1.03) scaleX(1.01) translateY(-10px) rotate(1deg);
+        opacity: 0.55;
+    }
+}
+
+/* ============================================================= */
+/* AJUSTES PARA CELULARES                                        */
+/* ============================================================= */
+
+@media (max-width: 600px) {
+    .llama {
+        filter: blur(5px); /* ← Un poco más de blur en celular por rendimiento */
+        opacity: 0.5;
+    }
+    
+    .llama-1, .llama-4 {
+        width: 55vw;
+        height: 80vh;
+    }
+    
+    .llama-2, .llama-3 {
+        width: 50vw;
+        height: 75vh;
+    }
+}
+
+/* Respetar la preferencia del usuario de reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+    .llama {
+        animation: none;
+    }
 }
